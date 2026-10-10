@@ -7,6 +7,9 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 **Stack:** Okta (trial-5500832.okta.com), Terraform v1.x, Okta Provider v4.20.0, PowerShell
 
 ## Architecture Overview
+
+[Lab 2 Architecture](02-okta-ad-integration/screenshots/architecture-diagram.png)
+
 ```
 [On-Prem AD: IT OU, Finance OU, All Staff]
          |
@@ -42,11 +45,12 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - AD Agent runs on Windows Server 2016+ member server, requires outbound HTTPS 443 to Okta, polls for changes, pushes to Domain Controller
 - Terraform `main.tf` = blueprint (committed), `terraform.tfvars` = secret token (gitignored via `*.tfvars`), `terraform.tfstate` = state with real IDs (gitignored), `.terraform/` = provider plugins (gitignored)
 - Groups verified in Okta Admin Portal: Directory > Groups > 9 groups including 3 synced (0 users expected - agent not installed, Terraform placeholder)
-- Architecture Note: `AD Agent on Windows Server 2016+ member server, outbound HTTPS 443 to Okta, polls for provisioning to DC`
 
 **Screenshots:**
-- `03-terraform-apply-success-FINAL.png` - Apply complete: 3 added
-- `05-okta-portal-groups-verified.png` - Portal verification
+- `02-okta-ad-integration/screenshots/terraform-apply-success.png` - Apply complete: 3 added
+- `02-okta-ad-integration/screenshots/okta-portal-groups-verified.png` - Portal verification
+- `02-okta-ad-integration/screenshots/terraform-plan.png` - Plan validation
+- `02-okta-ad-integration/screenshots/architecture-diagram.png` - Architecture diagram
 
 ### ⏳ Lab 3 - SSO Integration (Next)
 - SAML app integration
