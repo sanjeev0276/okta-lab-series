@@ -50,7 +50,7 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - ![Terraform Plan](02-okta-ad-integration/screenshots/terraform-plan.png) - Plan: 3 to add
 - ![Terraform Apply Success](02-okta-ad-integration/screenshots/terraform-apply-success.png) - Apply complete: 3 added
 - ![Okta Portal Verification](02-okta-ad-integration/screenshots/okta-portal-groups-verified.png) - Verified in Portal: Directory > Groups
-- ![Architecture Diagram](02-okta-ad-integration/screenshots/architecture-diagram.png) - Lab 2 architecture
+
 
 ### ⏳ Lab 3 - SSO Integration (Next)
 - SAML app integration
