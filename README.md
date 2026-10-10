@@ -8,7 +8,7 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 
 ## Architecture Overview
 
-[Lab 2 Architecture](02-okta-ad-integration/screenshots/architecture-diagram.png)
+![Lab 2 Architecture](02-okta-ad-integration/screenshots/architecture-diagram.png)
 
 ```
 [On-Prem AD: IT OU, Finance OU, All Staff]
