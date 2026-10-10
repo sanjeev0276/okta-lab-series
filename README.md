@@ -47,10 +47,10 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - Groups verified in Okta Admin Portal: Directory > Groups > 9 groups including 3 synced (0 users expected - agent not installed, Terraform placeholder)
 
 **Screenshots:**
-- `02-okta-ad-integration/screenshots/terraform-apply-success.png` - Apply complete: 3 added
-- `02-okta-ad-integration/screenshots/okta-portal-groups-verified.png` - Portal verification
-- `02-okta-ad-integration/screenshots/terraform-plan.png` - Plan validation
-- `02-okta-ad-integration/screenshots/architecture-diagram.png` - Architecture diagram
+- ![Terraform Plan](02-okta-ad-integration/screenshots/terraform-plan.png) - Plan: 3 to add
+- ![Terraform Apply Success](02-okta-ad-integration/screenshots/terraform-apply-success.png) - Apply complete: 3 added
+- ![Okta Portal Verification](02-okta-ad-integration/screenshots/okta-portal-groups-verified.png) - Verified in Portal: Directory > Groups
+- ![Architecture Diagram](02-okta-ad-integration/screenshots/architecture-diagram.png) - Lab 2 architecture
 
 ### ⏳ Lab 3 - SSO Integration (Next)
 - SAML app integration
