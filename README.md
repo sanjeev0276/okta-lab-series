@@ -1,9 +1,9 @@
-# Okta IAM Lab Series - Identity & Access Management with Terraform
+## Okta IAM Lab Series - Identity & Access Management with Terraform
 
 Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud and Terraform IaC. Part of OCP Cyber Security Portfolio.
 
-**Author:** Sanjeev Shrestha  
-**Location:** Allen, TX  
+**Author:** Sanjeev Shrestha
+**Location:** Allen, TX
 **Stack:** Okta (trial-5500832.okta.com), Terraform v1.x, Okta Provider v4.20.0, PowerShell
 
 ## Architecture Overview
@@ -20,14 +20,10 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 [Cloud Apps via SSO]
 ```
 
-> Full high-level diagrams per lab are included below in each lab section for portfolio documentation.
-
 ## Labs Progress
 
 ### ✅ Lab 1 - Okta Tenant Setup
-
 **Path:** `01-okta-tenant-setup/`
-
 - Created Okta Developer Trial Tenant: `trial-5500832`
 - Generated API Token for Terraform automation
 - Configured `terraform.tfvars` and provider authentication
@@ -35,16 +31,23 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - Screenshots: tenant dashboard, API token creation
 
 #### Architecture - Lab 1
-
 ![Lab 1 - Okta Tenant Setup Architecture](01-okta-tenant-setup/screenshots/architecture-diagram.png)
 
 **Flow:** Developer Workstation (Terraform v1.x, Okta Provider v4.20.0, PowerShell, `main.tf` blueprint + `terraform.tfvars` secret) → `terraform init` → `terraform plan` → `terraform apply` → Okta Identity Cloud (trial-5500832.okta.com - Admin Console, API Token generation, Universal Directory, Groups placeholder). Security via `.gitignore` (`.terraform/`, `*.tfstate`, `*.tfvars`, `api_token`), secrets management, token rotation, least privilege.
 
+#### Screenshots - Lab 1
+![Tenant Dashboard](01-okta-tenant-setup/screenshots/tenant-dashboard.png)
+![API Token Creation](01-okta-tenant-setup/screenshots/api-token.png)
+![Terraform Init](01-okta-tenant-setup/screenshots/terraform-init.png)
+![Terraform Plan](01-okta-tenant-setup/screenshots/terraform-plan.png)
+![Terraform Apply](01-okta-tenant-setup/screenshots/terraform-apply.png)
+![Terraform Plan No Changes](01-okta-tenant-setup/screenshots/terraform-plan-no-changes.png)
+
+
 ---
 
 ### ✅ Lab 2 - AD Integration (Current)
-
-**Path:** `02-okta-ad-integration/`  
+**Path:** `02-okta-ad-integration/`
 **Objective:** Simulate AD sync to Okta via AD Agent architecture.
 
 **Terraform Resources Created (via `terraform apply`):**
@@ -58,10 +61,15 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - Groups verified in Okta Admin Portal: Directory > Groups > 9 groups including 3 synced (0 users expected - agent not installed, Terraform placeholder)
 
 #### Architecture - Lab 2
-
-[Lab 2 - AD Integration Architecture](images/lab2-ad-integration-architecture.png)
+![Lab 2 - AD Integration Architecture](02-okta-ad-integration/screenshots/architecture-diagram.png)
 
 **Flow:** On-Prem AD (Windows Server 2016+ Member Server, OUs: IT OU, Finance OU, All Staff) --LDAPS 636/Kerberos--> AD Agent Service (Outbound HTTPS 443 polls Okta API, Pushes to DC, TLS 1.2+ encrypted) --Secure API Sync--> Okta Identity Cloud (trial-5500832.okta.com). Verification: Directory > Groups shows 9 total (3 synced from AD + 6 native), 0 users expected as placeholder. Terraform files: `main.tf` committed blueprint, `terraform.tfvars` gitignored secret, `terraform.tfstate` gitignored state, `.terraform/` gitignored plugins, `.terraform.lock.hcl` committed version lock.
+
+#### Screenshots - Lab 2
+![Terraform Plan - 3 to add](02-okta-ad-integration/screenshots/terraform-plan.png)
+![Terraform Apply Success](02-okta-ad-integration/screenshots/terraform-apply-success.png)
+![Okta Portal Verification](02-okta-ad-integration/screenshots/okta-portal-groups-verified.png)
+
 
 **Screenshots:**
 - Terraform Plan - Plan: 3 to add
@@ -71,10 +79,8 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 ---
 
 ### ⏳ Lab 3 - SSO Integration (Next) + RBAC Implementation
-
-**Path:** `03-okta-sso-rbac/`  
+**Path:** `03-okta-rbac-design/`
 **Based on:** `RyanKennon/Okta-RBAC` - Role-based access control model built in Active Directory and synced to Okta
-
 - SAML app integration
 - Group-based assignments
 - RBAC design: Helpdesk, Cloud Engineer, Finance, IT, HR, Kennon Technologies Employees
@@ -82,41 +88,27 @@ Hands-on implementation of Enterprise IAM architecture using Okta Identity Cloud
 - Leaver offboarding & access revocation (AD Disable → Move to `_DisabledUsers` → Remove groups → Full Import → Deactivated in Okta)
 
 #### Architecture - Lab 3
-
-[Lab 3 - SSO & RBAC Integration Architecture](images/lab3-sso-rbac-architecture.png)
+![Lab 3 - SSO & RBAC Integration Architecture](03-okta-rbac-design/screenshots/architecture-diagram.png)
 
 **Flow:**
 1. **RBAC Pipeline:** AD Groups (Helpdesk, Cloud Engineer, Finance etc.) → Sync via Okta AD Agent (Full Import) → Okta Groups (directory-linked) → App Access via Group Membership (least privilege)
 2. **SAML SSO:** User → Okta → SAML Assertion → Cloud Apps (SSO via group-based assignments)
 3. **Leaver Offboarding:** AD Disable Account → Move to `_DisabledUsers` OU → Remove from Finance and Employees groups → Okta Full Import → Deactivated status in Okta (AD remains Single Source of Truth)
 4. **Governance:** Access Sprawl Detection via Okta System Log filtering direct assignments, remediation by removing X assignment.
-
 AD OUs: `_Users` (Mike Taylor → Helpdesk, Lisa Park → Cloud Engineer), `_Groups` (Helpdesk, Cloud Engineer, Finance, IT, HR, Kennon Technologies Employees), `_DisabledUsers`, `_Admins`, `_ServiceAccounts`.
+
+#### Screenshots - Lab 3
+![RBAC Design](03-okta-rbac-design/screenshots/rbac-design.png)
+![SSO App](03-okta-rbac-design/screenshots/sso-app.png)
+![Group Assignment](03-okta-rbac-design/screenshots/group-assignment.png)
+![System Log](03-okta-rbac-design/screenshots/system-log.png)
+
 
 ---
 
 ## Security Practices
-
 - `.gitignore` covers: `.terraform/`, `*.tfstate`, `*.tfstate.*`, `*.tfvars`, `api_token`
 - API tokens rotated after exposure, never committed
 - `terraform.tfvars` protected, verified via `git check-ignore`
 
 ## How to Run
-
-```
-cd 02-okta-ad-integration/terraform
-
-terraform init
-terraform plan
-terraform apply -auto-approve
-```
-
-## Terraform Files Explained
-
-| File | Who Creates | Purpose | Commit? |
-| --- | --- | --- | --- |
-| main.tf | You | IaC blueprint | Yes |
-| terraform.tfvars | You | Secret token | **Never** |
-| .terraform.lock.hcl | Terraform | Version lock | Yes |
-| terraform.tfstate | Terraform | Real IDs memory | **Never** |
-| .terraform/ | Terraform | Plugins | **Never** |
